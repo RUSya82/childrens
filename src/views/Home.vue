@@ -6,7 +6,7 @@
         <tr class="table-active">
           <th scope="col">#</th>
           <th scope="col">Full Name</th>
-          <th scope="col">Last</th>
+          <th scope="col">Age</th>
         </tr>
         </thead>
         <tbody>
@@ -16,7 +16,7 @@
           <td>{{ user.age }}</td>
         </tr>
         <tr v-for="(child, indexOfChild) in user.children" :key="child.idx">
-          <td >{{ indexOfChild + 1 }}</td>
+          <td >{{ `${index + 1}.${indexOfChild + 1} `}}</td>
           <td>{{ child.name }}</td>
           <td>{{ child.age }}</td>
         </tr>
@@ -35,10 +35,6 @@
 export default {
   name: 'Home',
   components: {},
-  mounted() {
-    console.log(this.getUsers)
-
-  },
   computed: {
     getUsers() {
       return this.$store.getters['getUsers'];

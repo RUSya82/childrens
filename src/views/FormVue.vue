@@ -23,17 +23,13 @@
           </div>
         </div>
         <div v-if="hasChildren">
-          <div class="row g-3 justify-content-between" v-for="child in children" :key="child.idx">
-            <div class="col-auto">
-              <input type="text" class="form-control" placeholder="Name" v-model="child.name">
-            </div>
-            <div class="col-auto">
-              <input type="number" class="form-control" placeholder="age" v-model="child.age">
-            </div>
-            <div class="col-auto">
-              <button type="submit" class="btn btn-primary mb-3" @click.prevent="deleteChild(child.idx)">Delete</button>
-            </div>
-          </div>
+          <child-form-component
+              v-for="child in children" :key="child.idx"
+              :child="child"
+              @changeChildName="changeChildName"
+              @changeChildAge="changeChildAge"
+              @onDeleteChild="deleteChild"
+          />
         </div>
 
 
@@ -48,9 +44,10 @@
 
 <script>
 import {v4 as uuidv4} from 'uuid'
+import ChildFormComponent from "../components/ChildFormComponent";
 
 export default {
-
+  components: {ChildFormComponent},
   data() {
     return {
       user: {
@@ -69,7 +66,6 @@ export default {
         if(!this.maxChild){
           this.user.children.push(val);
         }
-
       },
       get() {
         return this.user.children;
@@ -84,6 +80,12 @@ export default {
     }
   },
   methods: {
+    changeChildAge(val, child){
+      child.name = val;
+    },
+    changeChildName(val, child){
+      child.age = val;
+    },
     addChildren() {
       this.children = {
         idx: uuidv4(),
@@ -92,7 +94,7 @@ export default {
       }
     },
     deleteChild(idx){
-      let index = this.children.findIndex(item => item.idx = idx);
+      let index = this.children.findIndex(item => item.idx === idx);
       this.user.children.splice(index, 1);
     },
     submitForm() {
